@@ -1,0 +1,13 @@
+<div class="layout">
+  <header>
+    <h2>SupplyChainX</h2>
+    <div class="user-info">
+      <span>{{ auth.currentUser()?.email }}</span>
+      <button (click)="logout()">Déconnexion</button>
+    </div>
+  </header>
+  
+  <main>
+    <ng-content></ng-content>
+  </main>
+</div>

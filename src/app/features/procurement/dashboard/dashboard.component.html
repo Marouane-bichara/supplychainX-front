@@ -1,0 +1,33 @@
+<app-layout>
+  <div class="dashboard">
+    <h1>Dashboard Approvisionnement</h1>
+    
+    <div class="welcome">
+      <p>Bienvenue, {{ auth.currentUser()?.firstName }} {{ auth.currentUser()?.lastName }}!</p>
+      <p>Rôles: {{ auth.currentUser()?.roles.join(', ') }}</p>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi-card">
+        <h3>Fournisseurs actifs</h3>
+        <div class="value">12</div>
+      </div>
+      
+      <div class="kpi-card">
+        <h3>Stock critique</h3>
+        <div class="value warning">5</div>
+      </div>
+      
+      <div class="kpi-card">
+        <h3>Commandes en attente</h3>
+        <div class="value">8</div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary">Nouveau fournisseur</button>
+      <button class="btn-primary">Nouvelle commande</button>
+      <button class="btn-secondary">Gérer les matières</button>
+    </div>
+  </div>
+</app-layout>

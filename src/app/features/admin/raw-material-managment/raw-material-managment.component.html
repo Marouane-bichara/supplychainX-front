@@ -1,0 +1,132 @@
+ <div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-text">SupplyChain<span class="accent">X</span></span>
+    </div>
+    <nav class="side-nav">
+      <a class="nav-item" (click)="dashboard()">
+        <span class="icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <div class="nav-divider">Approvisionnement</div>
+      <a class="nav-item" (click)="fournisseurs()">
+        <span class="icon">📦</span>
+        <span>Fournisseurs</span>
+      </a>
+      <a class="nav-item active">
+        <span class="icon">⛏️</span>
+        <span>Raw Material</span>
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="header">
+      <button class="menu-toggle">☰</button>
+      <div class="breadcrumb">
+        Approvisionnement / <strong>Matières Premières</strong>
+      </div>
+      <div class="actions">
+        <input type="text" placeholder="Filtrer par nom..." class="input" #search />
+        <button class="btn btn-primary" (click)="toggleModal()">+ Ajouter Matière</button>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="card">
+        <div class="card-header">
+          <h2>Stock des Matières Premières</h2>
+          <span class="count">{{ rawMaterials.length }} articles</span>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Désignation</th>
+                <th>Unité</th>
+                <th>Stock Actuel</th>
+                <th>Stock Min</th>
+                <th>Fournisseurs Préférés</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="loading">
+                <td colspan="6" class="loading">Chargement des matières premières...</td>
+              </tr>
+
+              <tr *ngFor="let m of rawMaterials">
+                <td class="name">{{ m.name }}</td>
+                <td>{{ m.unit }}</td>
+                <td>
+                  <span class="stock-status" [ngClass]="m.stock <= m.stockMin ? 'low' : 'high'">
+                    {{ m.stock }}
+                  </span>
+                </td>
+                <td><span class="badge">{{ m.stockMin }}</span></td>
+                <td>
+                  <div class="supplier-tags">
+                    <span *ngFor="let s of m.suppliers" class="rating-tag">
+                      {{ s.firstName }} {{ s.lastName }}
+                    </span>
+                    <span *ngIf="m.suppliers.length === 0" class="empty-text">Aucun</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="action-btns">
+                    <button class="btn-sm btn-edit">Modifier</button>
+                    <button class="btn-sm btn-delete">Supprimer</button>
+                  </div>
+                </td>
+              </tr>
+              
+              <tr *ngIf="!loading && rawMaterials.length === 0">
+                <td colspan="6" class="loading">Aucune donnée trouvée.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>Ajouter une Matière Première</h3>
+      <button class="close-x" (click)="toggleModal()">×</button>
+    </div>
+    
+    <form [formGroup]="materialForm" (ngSubmit)="onSubmit()">
+      <div class="form-body">
+        <div class="form-group">
+          <label>Désignation</label>
+          <input type="text" formControlName="name" class="input" placeholder="ex: Acier Inoxydable">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Unité</label>
+            <input type="text" formControlName="unit" class="input" placeholder="kg, L, Unité">
+          </div>
+          <div class="form-group">
+            <label>Stock Initial</label>
+            <input type="number" formControlName="stock" class="input">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Seuil d'alerte (Stock Min)</label>
+          <input type="number" formControlName="stockMin" class="input">
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="toggleModal()">Annuler</button>
+        <button type="submit" class="btn btn-primary" [disabled]="materialForm.invalid">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>

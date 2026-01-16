@@ -1,0 +1,32 @@
+<div class="login-container">
+  <div class="login-card">
+    <h1>SupplyChainX</h1>
+    <p>Connexion</p>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      @if (error()) {
+        <div class="alert-error">{{ error() }}</div>
+      }
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" formControlName="email" placeholder="email@example.com">
+        @if (form.get('email')?.touched && form.get('email')?.invalid) {
+          <small class="error">Email invalide</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <input type="password" formControlName="password" placeholder="••••••••">
+        @if (form.get('password')?.touched && form.get('password')?.invalid) {
+          <small class="error">Mot de passe requis</small>
+        }
+      </div>
+
+      <button type="submit" [disabled]="loading()">
+        {{ loading() ? 'Connexion...' : 'Se connecter' }}
+      </button>
+    </form>
+  </div>
+</div>

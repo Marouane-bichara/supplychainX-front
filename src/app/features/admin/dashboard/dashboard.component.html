@@ -1,0 +1,153 @@
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-text">SupplyChain<span class="accent">X</span></span>
+    </div>
+    <nav class="side-nav">
+      <div class="nav-divider">Main</div>
+      <a class="nav-item active">
+        <span class="icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      
+      <div class="nav-divider">Approvisionnement</div>
+      <a class="nav-item" (click)="fournisseurs()">
+        <span class="icon">📦</span>
+        <span>Fournisseurs</span>
+      </a>
+      <a class="nav-item" (click)="rawMaterial()">
+        <span class="icon">⛏️</span>
+        <span>Raw Material</span>
+      </a>
+
+      <div class="nav-divider">Production</div>
+      <a class="nav-item">
+        <span class="icon">🏭</span>
+        <span>Produits Finis</span>
+      </a>
+
+      <div class="nav-divider">Livraison</div>
+      <a class="nav-item">
+        <span class="icon">👥</span>
+        <span>Clients</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-pill">
+        <div class="avatar">AD</div>
+        <div class="user-details">
+          <span class="user-name">Admin User</span>
+          <span class="user-role">Administrator</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="header">
+      <div class="breadcrumb">SupplyChainX / <strong>Tableau de Bord</strong></div>
+      <div class="header-actions">
+        <div class="search-wrapper">
+          <input type="text" placeholder="Rechercher..." class="input search-input">
+        </div>
+        <button class="btn-icon">🔔<span class="dot"></span></button>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="alert-banner">
+        <div class="alert-content">
+          <span class="alert-icon">⚠️</span>
+          <p><strong>Alerte Stock Critique:</strong> 3 matières premières sont sous le seuil minimum.</p>
+        </div>
+        <button class="btn btn-alert" (click)="rawMaterial()">Gérer l'approvisionnement</button>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <span class="tag blue">Approvisionnement</span>
+          <div class="value">12</div>
+          <div class="label">Commandes en attente</div>
+        </div>
+        <div class="metric-card">
+          <span class="tag purple">Production</span>
+          <div class="value">08</div>
+          <div class="label">Ordres en cours</div>
+        </div>
+        <div class="metric-card">
+          <span class="tag green">Livraison</span>
+          <div class="value">24</div>
+          <div class="label">Livraisons planifiées</div>
+        </div>
+        <div class="metric-card">
+          <span class="tag orange">Alertes</span>
+          <div class="value">03</div>
+          <div class="label">Blocages Production</div>
+        </div>
+      </div>
+
+      <div class="data-grid">
+        <div class="card">
+          <div class="card-header">
+            <h3>Ordres de Production</h3>
+            <button class="btn-sm btn-edit">Voir Tout</button>
+          </div>
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Produit</th>
+                  <th>Statut</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge">#PO-24-01</span></td>
+                  <td class="name">Produit Alpha</td>
+                  <td><span class="status-pill purple">Production</span></td>
+                </tr>
+                <tr>
+                  <td><span class="badge">#PO-24-05</span></td>
+                  <td class="name">Produit Beta</td>
+                  <td><span class="status-pill red">Bloqué</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3>Livraisons à Expédier</h3>
+            <button class="btn-sm btn-edit">Planifier</button>
+          </div>
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Client</th>
+                  <th>Ville</th>
+                  <th>Statut</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="name">Tech Industries</td>
+                  <td>Paris</td>
+                  <td><span class="status-pill orange">Préparation</span></td>
+                </tr>
+                <tr>
+                  <td class="name">Global Logix</td>
+                  <td>Lyon</td>
+                  <td><span class="status-pill blue">En Route</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

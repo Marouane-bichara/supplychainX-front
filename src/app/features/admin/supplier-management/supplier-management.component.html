@@ -1,0 +1,169 @@
+<div class="app-shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-text">SupplyChain<span class="accent">X</span></span>
+    </div>
+    <nav class="side-nav">
+      <a class="nav-item" (click)="dashboard()">
+        <span class="icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <div class="nav-divider">Approvisionnement</div>
+      <a class="nav-item active">
+        <span class="icon">📦</span>
+        <span>Fournisseurs</span>
+      </a>
+        <a class="nav-item" (click)="rawMaterial()">
+        <span class="icon">⛏️</span>
+        <span>Raw Material</span>
+      </a>
+      <div class="nav-divider">Production</div>
+      <a class="nav-item">
+        <span class="icon">🏭</span>
+        <span>Produits Finis</span>
+      </a>
+      <div class="nav-divider">Livraison</div>
+      <a class="nav-item">
+        <span class="icon">👥</span>
+        <span>Clients</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+    <header class="header">
+      <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">
+        ☰
+      </button>
+      <div class="breadcrumb">
+        Approvisionnement / <strong>Fournisseurs</strong>
+      </div>
+      <div class="actions">
+        <input #firstName type="text" placeholder="Prénom" class="input" />
+        <input #lastName type="text" placeholder="Nom" class="input" />
+        <button class="btn btn-secondary" (click)="searchSupplier(firstName.value, lastName.value)">
+          Rechercher
+        </button>
+        <button class="btn btn-primary" (click)="openForm()">
+          + Ajouter
+        </button>
+      </div>
+    </header>
+
+    <!-- MODAL -->
+    <div class="modal-backdrop" *ngIf="showForm" (click)="closeForm()">
+      <div class="modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>{{ isEditMode ? 'Modifier Fournisseur' : 'Ajouter Fournisseur' }}</h3>
+          <button class="close-btn" (click)="closeForm()">×</button>
+        </div>
+        <form [formGroup]="supplierForm" (ngSubmit)="submitForm()">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Prénom</label>
+              <input type="text" formControlName="firstName" class="input" />
+            </div>
+            <div class="form-group">
+              <label>Nom</label>
+              <input type="text" formControlName="lastName" class="input" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Contact</label>
+            <input type="text" formControlName="contact" class="input" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Rating (0-5)</label>
+              <input type="number" formControlName="rating" class="input" min="0" max="5" />
+            </div>
+            <div class="form-group">
+              <label>Délai (jours)</label>
+              <input type="number" formControlName="leadTime" class="input" min="1" />
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" (click)="closeForm()">Annuler</button>
+            <button type="submit" class="btn btn-primary" [disabled]="supplierForm.invalid">
+              {{ isEditMode ? 'Mettre à jour' : 'Enregistrer' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="container">
+      <div class="card">
+        <div class="card-header">
+          <h2>Fournisseurs</h2>
+          <span class="count">{{ suppliers.length }} total</span>
+        </div>
+
+        <!-- Desktop Table -->
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Contact</th>
+                <th>Rating</th>
+                <th>Délai</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="loading">
+                <td colspan="6" class="loading">Chargement...</td>
+              </tr>
+              <tr *ngFor="let s of suppliers">
+                <td><span class="badge">SUP-{{ s.id }}</span></td>
+                <td class="name">{{ s.firstName }} {{ s.lastName }}</td>
+                <td>{{ s.contact }}</td>
+                <td>
+                  <span class="rating">{{ s.rating }} ⭐</span>
+                </td>
+                <td>{{ s.leadTime }}j</td>
+                <td>
+                  <div class="action-btns">
+                    <button class="btn-sm btn-edit" (click)="editSupplier(s)">Modifier</button>
+                    <button class="btn-sm btn-delete" (click)="deleteSupplier(s.id)">Supprimer</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile Cards -->
+        <div class="mobile-list">
+          <div *ngIf="loading" class="loading">Chargement...</div>
+          <div *ngFor="let s of suppliers" class="mobile-card">
+            <div class="mobile-card-header">
+              <span class="badge">SUP-{{ s.id }}</span>
+              <span class="rating">{{ s.rating }} ⭐</span>
+            </div>
+            <div class="mobile-card-title">{{ s.firstName }} {{ s.lastName }}</div>
+            <div class="mobile-card-info">
+              <div class="info-row">
+                <span>Contact:</span>
+                <span>{{ s.contact }}</span>
+              </div>
+              <div class="info-row">
+                <span>Délai:</span>
+                <span>{{ s.leadTime }} jours</span>
+              </div>
+            </div>
+            <div class="action-btns">
+              <button class="btn-sm btn-edit" (click)="editSupplier(s)">Modifier</button>
+              <button class="btn-sm btn-delete" (click)="deleteSupplier(s.id)">Supprimer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

@@ -8,6 +8,14 @@ export const routes: Routes = [
     redirectTo: '/login', 
     pathMatch: 'full' 
   },
+
+  {
+    path: 'supplier-orders',
+    canActivate: [authGuard],
+    data: { roles: ['GESTIONNAIRE_APPROVISIONNEMENT', 'ADMIN'] },
+    loadComponent: () => import('./features/admin/supplier-orders/supplier-orders.component')
+      .then(m => m.SupplierOrdersComponent)
+  },
   
   {
     path: 'login',
@@ -37,28 +45,17 @@ export const routes: Routes = [
   },
 
   {
-    path: 'procurement',
-    canActivate: [authGuard, roleGuard],
-    data: { roles: ['APPROVISIONNEMENT', 'ADMIN'] },
-    loadComponent: () => import('./features/procurement/dashboard/dashboard.component')
-      .then(m => m.DashboardComponent)
+    path: 'products',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/admin/product-management/product-management.component')
+      .then(m => m.ProductManagementComponent)
   },
+
+
   
-  {
-    path: 'production',
-    canActivate: [authGuard, roleGuard],
-    data: { roles: ['PRODUCTION', 'ADMIN'] },
-    loadComponent: () => import('./features/production/dashboard/dashboard.component')
-      .then(m => m.DashboardComponent)
-  },
+
   
-  {
-    path: 'delivery',
-    canActivate: [authGuard, roleGuard],
-    data: { roles: ['LIVRAISON', 'ADMIN'] },
-    loadComponent: () => import('./features/delivery/dashboard/dashboard.component')
-      .then(m => m.DashboardComponent)
-  },
+
   
   {
     path: 'admin',

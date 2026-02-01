@@ -18,7 +18,15 @@ export class RawMaterialManagmentService {
   } 
 
   createRawMaterial(rawMaterial: RawMaterial):Observable<RawMaterial>{
-    return this.http.post<RawMaterial>(`${this.baseUrl}/create/`, rawMaterial);
+    return this.http.post<RawMaterial>(`${this.baseUrl}/create`, rawMaterial);
   }
+
+  updateRawMaterial(id: number, rawMaterial: RawMaterial): Observable<RawMaterial> {
+  return this.http.put<RawMaterial>(
+    `${this.baseUrl}/update/${id}`,
+    rawMaterial
+  );
+}
+
 
 }

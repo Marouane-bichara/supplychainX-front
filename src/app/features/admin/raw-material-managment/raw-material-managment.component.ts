@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-raw-material-managment',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule], // Added ReactiveFormsModule
+  imports: [CommonModule, ReactiveFormsModule], 
   templateUrl: './raw-material-managment.component.html',
   styleUrl: './raw-material-managment.component.css'
 })
@@ -16,6 +16,10 @@ export class RawMaterialManagmentComponent implements OnInit {
   private router = inject(Router);
   private service = inject(RawMaterialManagmentService);
   private fb = inject(FormBuilder);
+
+  isEditMode = false;
+selectedMaterialId: number | null = null;
+
 
   loading = false;
   showModal = false; // Controls form visibility
@@ -36,10 +40,25 @@ export class RawMaterialManagmentComponent implements OnInit {
     this.loadRawMaterials();
   }
 
-  toggleModal() {
-    this.showModal = !this.showModal;
-    if (!this.showModal) this.materialForm.reset();
+toggleModal(material?: RawMaterial) {
+  this.showModal = !this.showModal;
+
+  if (material) {
+    this.isEditMode = true;
+this.selectedMaterialId = material.idMaterial;
+    this.materialForm.patchValue({
+      name: material.name,
+      unit: material.unit,
+      stock: material.stock,
+      stockMin: material.stockMin,
+      suppliers: material.suppliers
+    });
+  } else {
+    this.isEditMode = false;
+    this.selectedMaterialId = null;
+    this.materialForm.reset();
   }
+}
 
   loadRawMaterials() {
     this.loading = true;
@@ -52,18 +71,35 @@ export class RawMaterialManagmentComponent implements OnInit {
     });
   }
 
-  onSubmit() {
-    if (this.materialForm.valid) {
-      this.service.createRawMaterial(this.materialForm.value).subscribe({
+onSubmit() {
+  if (this.materialForm.invalid) return;
+
+  if (this.isEditMode && this.selectedMaterialId !== null) {
+    this.service
+      .updateRawMaterial(this.selectedMaterialId, this.materialForm.value)
+      .subscribe({
         next: () => {
-          this.loadRawMaterials(); 
-          this.toggleModal();     
+          this.loadRawMaterials();
+          this.toggleModal();
         },
-        error: (err) => console.error("Error adding material", err)
+        error: err => console.error('Error updating material', err)
       });
-    }
+
+  } else {
+    this.service.createRawMaterial(this.materialForm.value).subscribe({
+      next: () => {
+        this.loadRawMaterials();
+        this.toggleModal();
+      },
+      error: err => console.error('Error creating material', err)
+    });
   }
+}
 
   fournisseurs() { this.router.navigate(['/fournisseurs']); }
   dashboard() { this.router.navigate(['/dashboard']); }
+  supplierOrders(): void {
+    this.router.navigate(['/supplier-orders']);
+  }
+  products(): void { this.router.navigate(['/products']); }
 }

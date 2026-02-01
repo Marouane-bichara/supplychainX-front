@@ -13,6 +13,14 @@
         <span class="icon">📦</span>
         <span>Fournisseurs</span>
       </a>
+           <a class="nav-item " (click)="supplierOrders()">
+        <span class="icon">🧾</span>
+        <span>Supplier Orders</span>
+      </a>
+          <a class="nav-item" (click)="products()">
+            <span class="icon">🏷️</span>
+            <span>Produits</span>
+          </a>
       <a class="nav-item active">
         <span class="icon">⛏️</span>
         <span>Raw Material</span>
@@ -75,7 +83,9 @@
                 </td>
                 <td>
                   <div class="action-btns">
-                    <button class="btn-sm btn-edit">Modifier</button>
+<button class="btn-sm btn-edit" (click)="toggleModal(m)">
+  Modifier
+</button>
                     <button class="btn-sm btn-delete">Supprimer</button>
                   </div>
                 </td>
@@ -95,7 +105,7 @@
 <div class="modal-overlay" *ngIf="showModal">
   <div class="modal-card">
     <div class="modal-header">
-      <h3>Ajouter une Matière Première</h3>
+<h3>{{ isEditMode ? 'Modifier la Matière Première' : 'Ajouter une Matière Première' }}</h3>
       <button class="close-x" (click)="toggleModal()">×</button>
     </div>
     
@@ -125,7 +135,9 @@
 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="toggleModal()">Annuler</button>
-        <button type="submit" class="btn btn-primary" [disabled]="materialForm.invalid">Enregistrer</button>
+<button type="submit" class="btn btn-primary" [disabled]="materialForm.invalid">
+  {{ isEditMode ? 'Mettre à jour' : 'Enregistrer' }}
+</button>
       </div>
     </form>
   </div>

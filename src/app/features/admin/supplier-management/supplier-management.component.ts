@@ -41,6 +41,8 @@ export class SupplierManagementComponent implements OnInit {
     this.router.navigate(['/raw-material']);
   }
 
+  products() { this.router.navigate(['/products']); }
+
   initForm() {
   this.supplierForm = this.fb.group({
     id: [null], 
@@ -120,6 +122,10 @@ export class SupplierManagementComponent implements OnInit {
       });
   }
 }
+
+supplierOrders(): void {
+    this.router.navigate(['/supplier-orders']);
+  }
 
   editSupplier(supplier: Supplier) {
     this.isEditMode = true;

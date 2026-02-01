@@ -1,11 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet],
-  template: '<router-outlet />',
+  template: '<router-outlet></router-outlet>',
   styles: []
 })
-export class AppComponent {}
+export class AppComponent implements OnInit {
+  ngOnInit() {
+    console.log('AppComponent initialized');
+  }
+}

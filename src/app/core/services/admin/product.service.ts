@@ -14,7 +14,7 @@ export class ProductService {
 
   getAllProducts(): Observable<ProductDTOResponse[]> {
     return this.http.get<ProductDTOResponse[]>(this.baseUrl);
-  }
+  } 
 
 
   getProductById(id: number): Observable<ProductDTOResponse> {
